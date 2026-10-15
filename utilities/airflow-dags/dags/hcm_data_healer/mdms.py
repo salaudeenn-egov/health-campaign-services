@@ -8,7 +8,8 @@ MDMS is read once, under one tenant:
   otherwise: TENANT_ID is also the tenant healed.
 An entry runs only when data.active is YES and MDMS isActive is true. Fields (strings): rowIdentity, tenant, campaignName,
 startDate, endDate (blank = settle cutoff), errorTracer (blank = YES), slackChannels, active.
-Calls are in-cluster with an empty authToken. Env: MDMS_URL, plus tenancy keys.
+Calls are in-cluster with an empty authToken. Env: MDMS_URL, MDMS_SEARCH_ENDPOINT (optional
+search path, e.g. egov-mdms-service/v2/_search; default /mdms-v2/v2/_search), plus tenancy keys.
 """
 
 import logging
@@ -32,7 +33,9 @@ def _search_url():
     base = os.getenv("MDMS_URL", "").strip().rstrip("/")
     if not base:
         raise ValueError("MDMS_URL is not set - nothing to read the heal list from")
-    return f"{base}{API_PREFIX}/_search"
+    # the search path differs per cluster (e.g. unified-dev serves /egov-mdms-service/v2)
+    endpoint = os.getenv("MDMS_SEARCH_ENDPOINT", "").strip().lstrip("/")
+    return f"{base}/{endpoint}" if endpoint else f"{base}{API_PREFIX}/_search"
 
 
 def is_central():

@@ -2,8 +2,8 @@
 Audit trail for the hcm_data_healer DAG, published via Kafka to egov-persister.
 
 Tables (platform/dst_healer_audit.sql): dst_healer_run (one row per window, upserted
-from RUNNING to final status), dst_healer_record (one row per problem record) and
-the dst_healer_report view joining them.
+from RUNNING to final status) and dst_healer_record (one row per problem record),
+joined on dag_run_id + tenant_id + window_start.
 
 Topics are not tenant-prefixed; an unlisted topic is acked by Kafka but never persisted.
 Ids are deterministic (uuid5), so re-publishing never duplicates rows. A publish

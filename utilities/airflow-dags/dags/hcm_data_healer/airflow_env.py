@@ -33,6 +33,8 @@ KEYS = {
     "HCM_SERVICE_TEMPLATE": (False, "default http://{service}.egov:8080"),
     # MDMS (what to heal) + tenancy
     "MDMS_URL": (True, "MDMS v2 base URL, e.g. http://mdms-v2.egov:8080"),
+    "MDMS_SEARCH_ENDPOINT": (False, "MDMS search path, default /mdms-v2/v2/_search "
+                                    "(e.g. egov-mdms-service/v2/_search)"),
     "IS_CENTRAL_INSTANCE_ENABLED": (False, "true = central cluster: tenant taken from each MDMS entry"),
     "TENANT_ID": (True, "the MDMS tenant, e.g. ba (central) or taraba; also the tenant "
                         "healed when not central"),
